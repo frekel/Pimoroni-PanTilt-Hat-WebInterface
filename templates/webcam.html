@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Webcam</title>  
+		<style type="text/css">
+			body { 
+				text-align:center;
+				background-color:#000000;
+				color: #fff;
+			}
+			.center-block table {
+				margin: 0 auto;
+			}
+ 		</style>
+ 		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+ 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+		<script>
+			//Enter the variables here:
+			var stream_webcam_url="http://www.vanderstad.nl:8081";
+
+
+			//Default variables (no need to change)
+			var current_pan = 90;
+			var current_tilt = 90;
+
+			var current_direction = null;
+			var current_angle = null;
+	
+			jQuery(document).ready(function() {
+			
+				d = new Date();
+				jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
+
+				function refresh() {
+					d = new Date();
+					jQuery("#image1").attr("src", stream_webcam_url+"?cmd=snapPicture2&usr="+user+"&pwd="+pw+"&t="+d.getTime());
+					jQuery("button, input[type='button']" ).prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
+				}
+				
+				jQuery('#front').on('click', function() {
+					doPanTilt(90,100);
+				});
+				jQuery('#door').on('click', function() {
+					doPanTilt(160,110);
+				});
+				jQuery('#workplace').on('click', function() {
+					doPanTilt(45,110);
+				});
+				jQuery('#sunset').on('click', function() {
+					doPanTilt(90,180);
+				});
+				jQuery('#sky').on('click', function() {
+					doPanTilt(90,0);
+				});
+
+				jQuery('#up').on('click', function() {
+					current_direction = 'tilt';
+					current_angle = -1;
+					executePanTilt();
+				});
+				jQuery('#down').on('click', function() {
+					current_direction = 'tilt';
+					current_angle = 1;
+					executePanTilt();
+				});
+				jQuery('#left').on('click', function() {
+					current_direction = 'pan';
+					current_angle = 1;
+					executePanTilt();
+				});
+				jQuery('#right').on('click', function() {
+					current_direction = 'pan';
+					current_angle = -1;
+					executePanTilt();
+				});
+				jQuery('#refresh').on('click', function() {
+					refresh();
+				});
+				jQuery("button, input[type='button']" ).on('click', function() {
+					jQuery("button, input[type='button']" ).prop('disabled', true).removeClass('btn-primary').addClass('btn-default').addClass('btn-off');
+				});
+				function doPanTilt(pan, tilt){
+					current_angle = 0;
+
+					current_direction = 'pan';
+					current_pan = pan;
+					executePanTilt();
+
+					current_direction = 'tilt';
+					current_tilt = tilt;
+					executePanTilt();
+				}
+
+				function executePanTilt(){
+					
+					jQuery("#refresh").prop('disabled', false).removeClass('btn-default').addClass('btn-primary');
+					var angle = 0;
+					current_angle = jQuery("#stepsize").val() * current_angle;
+					
+					if(current_direction == 'pan'){
+						current_pan += current_angle;
+						if(current_pan <= 0){
+							current_pan = 0;
+							jQuery("#right" ).removeClass('btn-off');
+						}
+						
+						if(current_pan >= 180){
+							current_pan = 180;
+							jQuery("#left" ).removeClass('btn-off');
+						}
+						angle = current_pan;
+					}
+
+					if(current_direction == 'tilt'){
+						current_tilt += current_angle;
+						if(current_tilt <= 0) {
+							current_tilt = 0;
+							jQuery("#top" ).removeClass('btn-off');
+						}
+						if(current_tilt >= 180) {
+							current_tilt = 180;
+							jQuery("#bottom" ).removeClass('btn-off');
+						}
+						angle = current_tilt;
+					}
+					if (angle >= 0)
+					{
+						jQuery.get('/api/' + current_direction + '/' + angle).done(function(data) {
+							jQuery(".btn-off").prop('disabled', false).removeClass('btn-default').addClass('btn-primary');
+						});
+					}
+
+					
+				}	
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="page-header">
+				<h1>Pimoroni Pan/Tilt</h1>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-1 col-sm-6">
+					<img src="" alt="" class="img-rounded" id="image1"/>
+				</div>
+				<div class="col-md-4 col-sm-6">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Controls:</h3>
+						</div>
+						<div class="panel-body">
+							<div class="center-block">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="stepsize" class="col-sm-6 control-label">Step size</label>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" id="stepsize" placeholder="5" value="5">
+										</div>
+									</div>
+								</div>
+								<table>
+									<tr>
+										<td>&nbsp;</td>
+										<td><button type="button" id="up" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-up"></span></button></td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td><button type="button" id="left" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-left"></span></button></td>
+										<td>&nbsp;</td>
+										<td><button type="button" id="right" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td><button type="button" id="down" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-down"></span></button></td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+								<br clear="all"/>
+							</div>
+							<br clear="all"/>
+							<div class="btn-group">
+								<button type="button" id="front" class="btn btn-default">Front</button>
+								<button type="button" id="door" class="btn btn-default">Door</button>
+								<button type="button" id="workplace" class="btn btn-default">Workplace</button>
+								<button type="button" id="sky" class="btn btn-default">Sky</button>
+								<button type="button" id="sunset" class="btn btn-default">Sunset</button>
+							</div>
+							<br clear="all"/>
+							<br clear="all"/>
+							<div class="btn-group">
+								<button type="button" id="refresh" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span>Refresh</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
