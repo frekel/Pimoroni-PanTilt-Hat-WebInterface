@@ -72,14 +72,17 @@
 
 				jQuery('#refresh').on('click', function() {
 					d = new Date();
-					jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
 					jQuery("button, input[type='button']" ).prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
+					jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
+					
 				});
 
 				jQuery("button, input[type='button']" ).on('click', function() {
-					jQuery("button, input[type='button']" ).addClass('btn-off');
-					jQuery("#refresh").removeClass('btn-off');
-					jQuery(".btn-off").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+					if ($(this).attr('id') != 'refresh') {
+						jQuery("button, input[type='button']").addClass('btn-off');
+						jQuery("#refresh").removeClass('btn-off');
+						jQuery(".btn-off").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+					}
 				});
 
 				function doPanTilt(pan, tilt) {
