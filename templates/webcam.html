@@ -125,23 +125,25 @@
 						jQuery.get('/api/' + current_direction + '/' + angle).done(function(data) {
 							objdata = JSON.parse(data);
 							jQuery(".btn-off").prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
+							console.log(objdata.direction);
+							console.log(objdata.angle);
 							if (objdata.direction == 'tilt')
 							{
 								if (objdata.angle <= -90) {
-									jQuery("#top").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".top").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 								if (objdata.angle >= 90) {
-									jQuery("#bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
 
 							if (objdata.direction == 'pan')
 							{
 								if (objdata.angle <= -90) {
-									jQuery("#left").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".left").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 								if (objdata.angle >= 90) {
-									jQuery("#right").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".right").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
 						});
@@ -177,17 +179,17 @@
 								<table>
 									<tr>
 										<td>&nbsp;</td>
-										<td><button type="button" id="up" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-up"></span></button></td>
+										<td><button type="button" id="up" class="up btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-up"></span></button></td>
 										<td>&nbsp;</td>
 									</tr>
 									<tr>
-										<td><button type="button" id="left" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-left"></span></button></td>
+										<td><button type="button" id="left" class="left btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-left"></span></button></td>
 										<td>&nbsp;</td>
-										<td><button type="button" id="right" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+										<td><button type="button" id="right" class="right btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
 									</tr>
 									<tr>
 										<td>&nbsp;</td>
-										<td><button type="button" id="down" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-down"></span></button></td>
+										<td><button type="button" id="down" class="down btn btn-lg btn-primary"><span class="glyphicon glyphicon-arrow-down"></span></button></td>
 										<td>&nbsp;</td>
 									</tr>
 								</table>
