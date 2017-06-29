@@ -23,11 +23,11 @@ def api(direction, angle):
 
     if direction == 'pan':
         pantilthat.pan(angle)
-        return "{{'pan':{}}}".format(angle)
+        return "{{'direction': 'pan', 'angle':{}}}".format(angle)
 
     elif direction == 'tilt':
         pantilthat.tilt(angle)
-        return "{{'tilt':{}}}".format(angle)
+        return "{{'direction': 'tilt', 'angle':{}}}".format(angle)
 
     return "{'error':'invalid direction'}"
 

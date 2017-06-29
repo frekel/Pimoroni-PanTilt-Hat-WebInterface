@@ -33,12 +33,6 @@
 				d = new Date();
 				jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
 
-				function refresh() {
-					d = new Date();
-					jQuery("#image1").attr("src", stream_webcam_url+"?cmd=snapPicture2&usr="+user+"&pwd="+pw+"&t="+d.getTime());
-					jQuery("button, input[type='button']" ).prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
-				}
-				
 				jQuery('#front').on('click', function() {
 					doPanTilt(90,100);
 				});
@@ -75,14 +69,20 @@
 					current_angle = -1;
 					executePanTilt();
 				});
+
 				jQuery('#refresh').on('click', function() {
-					refresh();
+					d = new Date();
+					jQuery("#image1").attr("src", stream_webcam_url+"?cmd=snapPicture2&usr="+user+"&pwd="+pw+"&t="+d.getTime());
+					jQuery("button, input[type='button']" ).prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
 				});
+
 				jQuery("button, input[type='button']" ).on('click', function() {
-					jQuery("button, input[type='button']" ).prop('disabled', true).removeClass('btn-primary').addClass('btn-default').addClass('btn-off');
-					jQuery("#refresh").prop('disabled', false).removeClass('btn-default').addClass('btn-primary');
+					jQuery("button, input[type='button']" ).addClass('btn-off');
+					jQuery("#refresh").removeClass('btn-off');
+					jQuery(".btn-off").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 				});
-				function doPanTilt(pan, tilt){
+
+				function doPanTilt(pan, tilt) {
 					current_angle = 0;
 
 					current_direction = 'pan';
@@ -94,45 +94,61 @@
 					executePanTilt();
 				}
 
-				function executePanTilt(){
+				function executePanTilt() {
 					
 					var angle = 0;
 					current_angle = jQuery("#stepsize").val() * current_angle;
 					
-					if(current_direction == 'pan'){
+					if(current_direction == 'pan') {
 						current_pan += current_angle;
 						if(current_pan <= 0){
 							current_pan = 0;
-							jQuery("#right" ).removeClass('btn-off');
 						}
 						
-						if(current_pan >= 180){
+						if(current_pan >= 180) {
 							current_pan = 180;
-							jQuery("#left" ).removeClass('btn-off');
 						}
 						angle = current_pan;
 					}
 
-					if(current_direction == 'tilt'){
+					if(current_direction == 'tilt') {
 						current_tilt += current_angle;
 						if(current_tilt <= 0) {
 							current_tilt = 0;
-							jQuery("#top" ).removeClass('btn-off');
 						}
 						if(current_tilt >= 180) {
 							current_tilt = 180;
-							jQuery("#bottom" ).removeClass('btn-off');
 						}
 						angle = current_tilt;
 					}
-					if (angle >= 0)
-					{
-						jQuery.get('/api/' + current_direction + '/' + angle).done(function(data) {
-							jQuery(".btn-off").prop('disabled', false).removeClass('btn-default').addClass('btn-primary');
+					if (angle >= 0) {
+						jQuery.getJSON('/api/' + current_direction + '/' + angle).done(function(data) {
+							alert(data);
+							obj = JSON.parse(json); 
+							alert(obj);
+							jQuery(".btn-off").prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
+							
+							if (obj.direction == 'tilt')
+							{
+								if (obj.angle <= -90) {
+									jQuery("#top").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+								}
+								if (obj.angle >= 90) {
+									jQuery("#bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+								}
+							}
+
+							if (obj.direction == 'pan')
+							{
+								if (obj.angle <= -90) {
+									jQuery("#top").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+								}
+								if (obj.angle >= 90) {
+									jQuery("#bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+								}
+							}
 						});
 					}
-
-					
 				}	
 			});
 		</script>
