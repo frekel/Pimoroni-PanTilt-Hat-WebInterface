@@ -27,3 +27,7 @@ Finally, to run this example, run:
 ```
 
 The servers is running on port 9595. So open the page in your browser (http://127.0.0.1:9595)
+
+# Notes:
+1. The buttons have a set of predefined values (for the pan and the tilt).
+2. Bootstrap 3 is used
