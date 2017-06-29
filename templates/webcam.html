@@ -80,6 +80,7 @@
 				});
 				jQuery("button, input[type='button']" ).on('click', function() {
 					jQuery("button, input[type='button']" ).prop('disabled', true).removeClass('btn-primary').addClass('btn-default').addClass('btn-off');
+					jQuery("#refresh").prop('disabled', false).removeClass('btn-default').addClass('btn-primary');
 				});
 				function doPanTilt(pan, tilt){
 					current_angle = 0;
@@ -95,7 +96,6 @@
 
 				function executePanTilt(){
 					
-					jQuery("#refresh").prop('disabled', false).removeClass('btn-default').addClass('btn-primary');
 					var angle = 0;
 					current_angle = jQuery("#stepsize").val() * current_angle;
 					
