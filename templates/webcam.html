@@ -16,7 +16,7 @@
  		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 
-		<script>
+		<script type="text/javascript">
 			//Enter the variables here:
 			var stream_webcam_url="http://www.vanderstad.nl:8081";
 
@@ -72,7 +72,7 @@
 
 				jQuery('#refresh').on('click', function() {
 					d = new Date();
-					jQuery("#image1").attr("src", stream_webcam_url+"?cmd=snapPicture2&usr="+user+"&pwd="+pw+"&t="+d.getTime());
+					jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
 					jQuery("button, input[type='button']" ).prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
 				});
 
@@ -123,28 +123,25 @@
 					}
 					if (angle >= 0) {
 						jQuery.getJSON('/api/' + current_direction + '/' + angle).done(function(data) {
-							alert(data);
-							obj = JSON.parse(json); 
-							alert(obj);
+							objdata = JSON.parse(data);
 							jQuery(".btn-off").prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
-							
-							if (obj.direction == 'tilt')
+							if (objdata.direction == 'tilt')
 							{
-								if (obj.angle <= -90) {
+								if (objdata.angle <= -90) {
 									jQuery("#top").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
-								if (obj.angle >= 90) {
+								if (objdata.angle >= 90) {
 									jQuery("#bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
 
-							if (obj.direction == 'pan')
+							if (objdata.direction == 'pan')
 							{
-								if (obj.angle <= -90) {
-									jQuery("#top").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+								if (objdat.angle <= -90) {
+									jQuery("#left").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
-								if (obj.angle >= 90) {
-									jQuery("#bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+								if (objdat.angle >= 90) {
+									jQuery("#right").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
 						});
