@@ -1,9 +1,6 @@
 # Pimoroni-PanTilt-Hat-WebInterface
 This is a bootstrap webinterface for the Pimoroni PanTilt Hat
 
-Mini Pan-Tilt Face Tracker
-==========================
-
 You will need:
 * Pimoroni Pan/Tilt HAT Kit
 * A Pi Camera
