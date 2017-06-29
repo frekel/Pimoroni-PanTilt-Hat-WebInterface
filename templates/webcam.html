@@ -131,17 +131,17 @@
 									jQuery(".btn-data-up").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 								if (objdata.angle >= 90) {
-									jQuery(".btn-data-bottom").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".btn-data-down").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
 
 							if (objdata.direction == 'pan')
 							{
 								if (objdata.angle <= -90) {
-									jQuery(".btn-data-left").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".btn-data-right").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 								if (objdata.angle >= 90) {
-									jQuery(".btn-data-right").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+									jQuery(".btn-data-left").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
 						});
