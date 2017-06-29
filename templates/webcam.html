@@ -122,7 +122,7 @@
 						angle = current_tilt;
 					}
 					if (angle >= 0) {
-						jQuery.getJSON('/api/' + current_direction + '/' + angle).done(function(data) {
+						jQuery.get('/api/' + current_direction + '/' + angle).done(function(data) {
 							objdata = JSON.parse(data);
 							jQuery(".btn-off").prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
 							if (objdata.direction == 'tilt')
@@ -137,10 +137,10 @@
 
 							if (objdata.direction == 'pan')
 							{
-								if (objdat.angle <= -90) {
+								if (objdata.angle <= -90) {
 									jQuery("#left").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
-								if (objdat.angle >= 90) {
+								if (objdata.angle >= 90) {
 									jQuery("#right").prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
 								}
 							}
