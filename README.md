@@ -27,6 +27,21 @@ sudo pip install Flask-Assets;
 sudo pip install Flask-ini
 ```
 
+Create a config file "config.ini":
+```bash
+[flask]
+debug = true
+secret_key = frekelpantilt
+
+[user]
+name = admin
+pass = pass
+
+[webcam]
+url = https://learn.pimoroni.com/static/repos/learn/sandyj/assembling-pan-tilt-at-14.jpg
+timeout = 360
+```
+
 Finally, to run this example, run:
 
 ```bash
