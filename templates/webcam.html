@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Webcam</title>  
+		<title>Webcam</title>
 		<style type="text/css">
-			body { 
+			body {
 				text-align:center;
 				background-color:#000000;
 				color: #fff;
@@ -12,9 +12,13 @@
 				margin: 0 auto;
 			}
  		</style>
- 		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
- 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+		{% assets "js_all" %}
+			<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+		{% endassets %}
+
+		{% assets "css_all" %}
+			<link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css" />
+		{% endassets %}
 
 		<script type="text/javascript">
 			//Enter the variables here:
@@ -27,9 +31,9 @@
 
 			var current_direction = null;
 			var current_angle = null;
-	
+
 			jQuery(document).ready(function() {
-			
+
 				d = new Date();
 				jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
 
@@ -74,7 +78,7 @@
 					d = new Date();
 					jQuery("button, input[type='button']" ).prop('disabled', false).removeClass('btn-default').addClass('btn-primary').removeClass('btn-off');
 					jQuery("#image1").attr("src", stream_webcam_url+"?t="+d.getTime());
-					
+
 				});
 
 				jQuery("button, input[type='button']" ).on('click', function() {
@@ -98,16 +102,16 @@
 				}
 
 				function executePanTilt() {
-					
+
 					var angle = 0;
 					current_angle = jQuery("#stepsize").val() * current_angle;
-					
+
 					if(current_direction == 'pan') {
 						current_pan += current_angle;
 						if(current_pan <= 0){
 							current_pan = 0;
 						}
-						
+
 						if(current_pan >= 180) {
 							current_pan = 180;
 						}
@@ -149,7 +153,7 @@
 							}
 						});
 					}
-				}	
+				}
 			});
 		</script>
 	</head>
