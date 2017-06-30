@@ -19,6 +19,12 @@ To install the pantilthat library, run:
 ```bash
 curl https://get.pimoroni.com/pantilthat | bash
 ```
+Install the flask modules by running:
+
+```bash
+sudo pip install Flask;
+sudo pip install Flask-Assets;
+```
 
 Finally, to run this example, run:
 
