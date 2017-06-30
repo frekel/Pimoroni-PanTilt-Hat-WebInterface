@@ -10,11 +10,16 @@ except ImportError:
 try:
     from flask import Flask, render_template, request, Response
     from flask_assets import Environment, Bundle
+    from flask_ini import FlaskIni
 except ImportError:
-    exit("This script requires the flask module and flask_assets\nInstall with: sudo pip install flask and sudo pip install flask-assets")
+    exit("This script requires the flask module, flask_assets and flask_ini\nInstall with: sudo pip install Flask, sudo pip install Flask-ini and sudo pip install Flask-assets")
 
 app = Flask(__name__)
 assets = Environment(app)
+
+app.iniconfig = FlaskIni()
+with app.app_context():
+    app.iniconfig.read('config.ini')
 
 js = Bundle(
     'assets/jquery-3.2.1.js',
@@ -35,7 +40,7 @@ def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == 'admin' and password == 'frekel'
+    return username == app.iniconfig.get('user', 'name') and password == app.iniconfig.get('user', 'pass')
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
@@ -55,8 +60,8 @@ def requires_auth(f):
 
 @app.route('/')
 @requires_auth
-def home():
-    return render_template('webcam.html')
+def home(url=None):
+    return render_template('webcam.html', url=app.iniconfig.get('webcam', 'url'))
 
 @app.route('/api/<direction>/<int:angle>')
 @requires_auth

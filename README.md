@@ -24,6 +24,7 @@ Install the flask modules by running:
 ```bash
 sudo pip install Flask;
 sudo pip install Flask-Assets;
+sudo pip install Flask-ini
 ```
 
 Finally, to run this example, run:
